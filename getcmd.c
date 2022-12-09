@@ -31,6 +31,7 @@ int getcmd(char **ps)
 
 		return (-1);
 	}
+	linebuffer[strlen(linebuffer) - 1] = '\0';
 	*ps = linebuffer;
 	return (0);
 }
