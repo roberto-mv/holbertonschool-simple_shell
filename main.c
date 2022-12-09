@@ -2,15 +2,18 @@
 
 /**
  * main - entry point
+ * @ac: arguments counter
+ * @av: arguments vector
  *
  * Return: always EXIT_SUCCESS
  */
-int main(void)
+int main(int ac __attribute__((unused)), char **av)
 {
 	/* Buffer that will store the user's input */
 	char *line = NULL;
 	struct cmd *cmd_tree;
 
+	(void) av;
 	signal(SIGINT, &handle_sigint);
 
 	/* Read and run input commands */
@@ -20,7 +23,6 @@ int main(void)
 			continue;
 
 		cmd_tree = parsecmd(line);
-
 		if (cmd_tree == NULL)
 			continue;
 
