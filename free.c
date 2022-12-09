@@ -26,8 +26,6 @@ void free_tree(struct cmd *cmd)
 			free(lcmd);
 			break;
 	}
-
-	return;
 }
 
 /**
