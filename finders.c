@@ -2,23 +2,28 @@
 
 /**
  * cmdfinder - looks for a given file in the current PATH
- * @command: command to look for
+ * @line: command to look for
  *
  * Return: if access is posible, return the absolute path
  * where the command was found. NULL otherwise
  */
-char *cmdfinder(char *command)
+char *cmdfinder(char *line)
 {
 	char *path = getenv("PATH"), *temp = NULL;
 	char paths[512];
-	char *dir = NULL;
+	char *dir = NULL, *command, *token;
 
 	if (path == NULL)
 	{
 		fprintf(stderr, "Error: PATH environment variable not set\n");
-		free(command);
 		return (NULL);
 	}
+
+	token = strtok(line, " \t\n\r\v;");
+	if (token == NULL)
+		return (NULL);
+
+	command = strdup(token);
 	if (access(command, F_OK) != -1)
 		return (command);
 
@@ -87,4 +92,25 @@ int isabuiltin(char *line)
 		safe_free(&dummy);
 
 	return (1);
+}
+
+/**
+ * peek - checks if the first non whitespace character
+ * matches any tokens
+ * @ps: pointer to string
+ * @es: end of string
+ * @tokens: string of tokens
+ *
+ * Return: 1 if matches, 0 otherwise
+ */
+int peek(char **ps, char *es, char *tokens)
+{
+	char *s;
+
+	s = *ps;
+	while (s < es && strchr(" \t\t\v", *s))
+		s++;
+	*ps = s;
+
+	return (*s && strchr(tokens, *s));
 }
