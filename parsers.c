@@ -10,50 +10,81 @@
 struct cmd *parsecmd(char *line)
 {
 	struct cmd *cmd;
+	char *es, *anchor, *dummy;
+	char *all_delim = " \t\n\r\v;";
 
-	cmd = parseexec(&line);
+	anchor = line;
+	es = line + strlen(line);
+	cmd = parseline(&line, es);
+	line = anchor;
+
+	/* null terminates all arguments */
+	dummy = strtok(line, all_delim);
+	while (dummy != NULL)
+		dummy = strtok(NULL, all_delim);
+	return (cmd);
+}
+
+/**
+ * parseline - builds a node of type struct listcmd
+ * @ps: pointer to string
+ * @es: end of string
+ *
+ * Return: pointer to node of type struct cmd
+ */
+struct cmd *parseline(char **ps, char *es)
+{
+	struct cmd *cmd;
+
+	cmd = parseexec(ps, es);
+	if (peek(ps, es, ";\n"))
+	{
+		gettoken(ps, es, 0);
+		cmd = listcmd(cmd, parseline(ps, es));
+	}
 	return (cmd);
 }
 
 /**
  * parseexec - builds a node of type struct execcmd
  * @ps: pointer to string
+ * @es: end of string
  *
- * Return: pointer to node of type struct cmd
+ * Return: pointer to node of type struct cmd, NULL
+ * if first token is not a valid command
  */
-struct cmd *parseexec(char **ps)
+struct cmd *parseexec(char **ps, char *es)
 {
-	int argc = 0;
-	char *token, *command, *dummy;
-	char *whitespace = " \t\r\n\v";
+	int argc = 0, token;
+	char *command, *dummy, *q, *s;
+	char *whitespace = " \t\r\v";
 	struct execcmd *cmd;
 	struct cmd *ret;
 
 	dummy = strdup(*ps);
-	token = strtok(dummy, whitespace);
-	if (token == NULL)
-	{
-		safe_free(&dummy);
-		return (NULL);
-	}
-	command = strdup(token);
+	command = cmdfinder(dummy);
 	safe_free(&dummy);
 
 	/* This must be a valid command, so we search for it in the PATH */
-	command = cmdfinder(command);
 	if (command == NULL)
 		return (NULL);
 
 	ret = execcmd();
 	cmd = (struct execcmd *)ret;
 	cmd->argv[argc++] = command;
-	token = strtok(*ps, whitespace);
-	token = strtok(NULL, whitespace);
-	while (token != NULL)
+	s = *ps;
+	while (s < es && strchr(whitespace, *s))
+		s++;
+	while (s < es && !strchr(whitespace, *s) && !strchr(";\n", *s))
+		s++;
+	while (!peek(&s, es, ";\n"))
 	{
-		cmd->argv[argc++] = token;
-		token = strtok(NULL, whitespace);
+		token = gettoken(&s, es, &q);
+		if (token == 0)
+			break;
+		cmd->argv[argc++] = q;
 	}
 	cmd->argv[argc] = NULL;
+	*ps = s;
 	return (ret);
 }
