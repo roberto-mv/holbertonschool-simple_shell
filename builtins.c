@@ -38,7 +38,8 @@ void bin_exit(char **ps)
 		return;
 	}
 
-	printf("exit\n");
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
 	status = atoi(exit_status);
 	safe_free(ps);
 	exit(status);
