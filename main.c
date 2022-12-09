@@ -7,11 +7,11 @@
  */
 int main(void)
 {
-	signal(SIGINT, &handle_sigint);
-
 	/* Buffer that will store the user's input */
 	char *line = NULL;
 	struct cmd *cmd_tree;
+
+	signal(SIGINT, &handle_sigint);
 
 	/* Read and run input commands */
 	while (getcmd(&line) >= 0)
