@@ -9,10 +9,25 @@
 void free_tree(struct cmd *cmd)
 {
 	struct execcmd *ecmd;
+	struct listcmd *lcmd;
 
-	ecmd = (struct execcmd *)cmd;
-	free(ecmd->argv[0]);
-	free(ecmd);
+	switch (cmd->type)
+	{
+		case EXEC:
+			ecmd = (struct execcmd *)cmd;
+			free(ecmd->argv[0]);
+			free(ecmd);
+			break;
+
+		case LIST:
+			lcmd = (struct listcmd *)cmd;
+			free_tree(lcmd->left);
+			free_tree(lcmd->right);
+			free(lcmd);
+			break;
+	}
+
+	return;
 }
 
 /**
@@ -24,7 +39,8 @@ void free_tree(struct cmd *cmd)
 void safe_free(char **ps)
 {
 	if (ps && *ps)
+	{
 		free(*ps);
-
-	*ps = NULL;
+		*ps = NULL;
+	}
 }
