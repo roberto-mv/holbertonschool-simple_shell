@@ -30,6 +30,7 @@ void runcmd(struct cmd *cmd)
 			if (forking() == 0)
 				runcmd(lcmd->left);
 			wait(0);
+			runcmd(lcmd->right);
 			break;
 	}
 
