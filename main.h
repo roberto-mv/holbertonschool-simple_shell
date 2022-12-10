@@ -7,8 +7,10 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <fcntl.h>
 
 #define EXEC 1
 #define LIST 2
@@ -36,6 +38,20 @@ typedef struct builtins
 	char *builtin;
 	void (*f)(char **);
 } builtin_t;
+
+/**
+ * struct list_s - singly linked list
+ * @n: number descriptor
+ * @str: string
+ * @next: pointer to the next node
+ *
+ */
+typedef struct list_s
+{
+	int n;
+	char *str;
+	struct list_s *next;
+} list_t;
 
 /**
  * struct path_node - single linked list
