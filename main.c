@@ -12,9 +12,19 @@ int main(int ac __attribute__((unused)), char **av)
 	/* Buffer that will store the user's input */
 	char *line = NULL;
 	struct cmd *cmd_tree;
+	int fd;
 
 	(void) av;
-	signal(SIGINT, &handle_sigint);
+
+	/* Ensure that three file descriptors are open */
+	while ((fd = open("console", O_RDWR)) >= 0)
+	{
+		if (fd >= 3)
+		{
+			close(fd);
+			break;
+		}
+	}
 
 	/* Read and run input commands */
 	while (getcmd(&line) >= 0)
