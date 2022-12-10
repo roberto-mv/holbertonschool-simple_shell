@@ -12,7 +12,10 @@ int getcmd(char **ps)
 	size_t nbuf = 0;
 	char *linebuffer = NULL;
 
-	/* Print the promt in interactive mode*/
+	/* Catch SIGINT (CTRL + C) signal */
+	signal(SIGINT, &handle_sigint);
+
+	/* Print the prompt in interactive mode*/
 	if (isatty(STDIN_FILENO))
 		write(1, "$ ", 2);
 
