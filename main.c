@@ -34,7 +34,12 @@ int main(int ac __attribute__((unused)), char **av)
 
 		cmd_tree = parsecmd(line);
 		if (cmd_tree == NULL)
-			continue;
+		{
+			if (isatty(STDIN_FILENO))
+				exit(127);
+			else
+				continue;
+		}
 
 		if (forking() == 0)
 			runcmd(cmd_tree);
