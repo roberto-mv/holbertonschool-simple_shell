@@ -6,7 +6,7 @@
  *
  * Return: nothing
  */
-void bin_exit(char **ps)
+int bin_exit(char **ps)
 {
 	char *temp;
 	char *exit_status;
@@ -35,8 +35,8 @@ void bin_exit(char **ps)
 	temp = strtok(NULL, whitespace);
 	if (temp != NULL)
 	{
-		fprintf(stderr, "hsh: exit: too many arguments\n");
-		return;
+		fprintf(stderr, "./hsh: 1: exit: too many arguments\n");
+		return (BUILTIN_FAIL);
 	}
 
 	if (isatty(STDIN_FILENO))
@@ -52,7 +52,7 @@ void bin_exit(char **ps)
  *
  * Return: nothing
  */
-void bin_cd(char **ps)
+int bin_cd(char **ps)
 {
 	char *temp, *leftovers;
 	char whitespace[] = " \t\n\r\v";
@@ -60,18 +60,41 @@ void bin_cd(char **ps)
 	temp = strtok(*ps, whitespace);
 	temp = strtok(NULL, whitespace);
 	if (temp == NULL)
-		return;
+		return (1);
 
 	leftovers = strtok(NULL, whitespace);
 	if (leftovers != NULL)
 	{
 		fprintf(stderr, "hsh: cd: too many arguments\n");
-		return;
+		return (1);
 	}
 
 	if (chdir(temp) < 0)
 	{
 		fprintf(stderr, "hsh: cd: %s: No such file or directory\n", temp);
-		return;
+		return (1);
 	}
+
+	return (BUILTIN_SUCCESS);
+}
+
+/**
+ * bin_env - prints the current environment
+ * @ps: pointer to string
+ *
+ * Return: nothing
+ */
+int bin_env(char **ps)
+{
+	char **env = environ;
+	int i;
+
+	(void) ps;
+	if (env == NULL)
+		return (BUILTIN_FAIL);
+
+	for (i = 0; env[i] != NULL; i++)
+		printf("%s\n", env[i]);
+
+	return (BUILTIN_SUCCESS);
 }
