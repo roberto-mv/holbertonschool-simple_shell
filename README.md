@@ -63,7 +63,7 @@ $
 ## Authors :black_nib:
 
 * Marcelo Vizcarra <[mavix21](https://github.com/mavix21)>
-* Roberto Montes <[jocalao001](https://github.com/roberto-mv)>
+* Roberto Montes <[roberto-mv](https://github.com/roberto-mv)>
 
 ## Acknowledgements :pray:
 
