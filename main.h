@@ -18,6 +18,7 @@
 #define MAXARGS 20
 #define BUFSIZE 120
 
+#define BUILTIN_SUCCESS 1
 #define BUILTIN_FAIL 2
 
 #define UNUSED(x) (void)(x)
@@ -36,7 +37,7 @@ extern char **environ;
 typedef struct builtins
 {
 	char *builtin;
-	void (*f)(char **);
+	int (*f)(char **);
 } builtin_t;
 
 /**
@@ -143,11 +144,11 @@ void free_tree(struct cmd *cmd);
 void safe_free(char **str);
 
 /* builtins */
-void bin_exit(char **ps);
-void bin_env(char **ps);
-void bin_setenv(char **ps);
-void bin_setenv(char **ps);
-void bin_unsetenv(char **ps);
-void bin_cd(char **ps);
+int bin_exit(char **ps);
+int bin_env(char **ps);
+int bin_setenv(char **ps);
+int bin_setenv(char **ps);
+int bin_unsetenv(char **ps);
+int bin_cd(char **ps);
 
 #endif
