@@ -35,7 +35,7 @@ int main(int ac __attribute__((unused)), char **av)
 		cmd_tree = parsecmd(line);
 		if (cmd_tree == NULL)
 		{
-			if (isatty(STDIN_FILENO))
+			if (!isatty(STDIN_FILENO))
 				exit(127);
 			else
 				continue;
