@@ -57,17 +57,18 @@ char *cmdfinder(char *line)
  * isabuiltin - checks if the first argument is a builtin
  * @line: string containing user's input
  *
- * Return: does not return on success. On failure, returns 1
- * if first argument is not a builtin, returns 2 if argument is
- * a builtin but falied to execute
+ * Return: BUILTIN_SUCCESS on success. On failure, returns -1
+ * if first argument is not a builtin, returns BUILTIN_FAIL if
+ * argument is a builtin but falied to execute
+ * 
  */
 int isabuiltin(char *line)
 {
 	builtin_t bins[] = {
 		{"exit", bin_exit},
 		{"cd", bin_cd},
+		{"env", bin_env},
 		/**
-		 * {"env", bin_env},
 		 * {"setenv", bin_setenv},
 		 * {"unsetenv", bin_unsetenv},
 		 */
@@ -81,7 +82,7 @@ int isabuiltin(char *line)
 	if (temp == NULL)
 	{
 		safe_free(&dummy);
-		return (1);
+		return (-1);
 	}
 
 	for (i = 0; bins[i].builtin != NULL; i++)
@@ -89,14 +90,13 @@ int isabuiltin(char *line)
 		if (!strcmp(temp, bins[i].builtin))
 		{
 			safe_free(&dummy);
-			bins[i].f(&line);
-			return (BUILTIN_FAIL);
+			return (bins[i].f(&line));
 		}
 	}
 	if (dummy != NULL)
 		safe_free(&dummy);
 
-	return (1);
+	return (-1);
 }
 
 /**
