@@ -1,0 +1,18 @@
+.TH man 1 "2 December 2022" "Simple Shell"
+
+.SH NAME
+.B Our own simple_shell.
+- We try to build our own simple shell.
+
+.SH SYNOPSIS
+It is the creation of a simple unix command interpreter that provides a user interface to access operating system services.
+.SH
+.SH
+.SH DESCRIPTION
+we use the following files to build our own simple shell:
+.PP
+main.h - Add structure list_t, main.c - Free line before exit 127 in non interactive mode, helpers.c - Set unused variable, gettoken.c - Add gettoken function, getcmd.c - Add sigint handler, free.c - Free only if not NULL, finders.c - Handle message errors, constructors.c - Add constructor functions, builtins.c - 
+exit builtin now frees line before exit with bad arguments, parsers.c - Improve parsing, runcmd.c - Add environ variable to execve.
+
+.SH AUTHORS
+Roberto Montes, Marcelo Vizarra
