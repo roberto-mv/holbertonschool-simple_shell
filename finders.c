@@ -13,12 +13,6 @@ char *cmdfinder(char *line)
 	char paths[512];
 	char *dir = NULL, *command, *token;
 
-	if (path == NULL)
-	{
-		fprintf(stderr, "Error: PATH environment variable not set\n");
-		return (NULL);
-	}
-
 	token = strtok(line, " \t\n\r\v;");
 	if (token == NULL)
 		return (NULL);
@@ -26,6 +20,12 @@ char *cmdfinder(char *line)
 	command = strdup(token);
 	if (access(command, F_OK) != -1)
 		return (command);
+
+	if (path == NULL)
+	{
+		fprintf(stderr, "./hsh: 1: %s: not found\n", token);
+		return (NULL);
+	}
 
 	temp = strdup(path);
 	dir = strtok(temp, ":");
@@ -42,7 +42,7 @@ char *cmdfinder(char *line)
 		memset(paths, 0, sizeof(paths));
 		dir = strtok(NULL, ":");
 	}
-	fprintf(stderr, "hsh: %s: command not found\n", command);
+	fprintf(stderr, "./hsh: 1: %s: not found\n", command);
 	safe_free(&command);
 	safe_free(&temp);
 	return (NULL);
