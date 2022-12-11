@@ -34,8 +34,8 @@ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c -o hsh
 Example:
 
 ```
-$ echo "echo 'hello'" | ./hsh
-'hello'
+$ echo "/bin/ls" | ./hsh
+ada.txt betty cisfun.js
 $
 ```
 
@@ -44,7 +44,7 @@ If **hsh** is invoked with standard input connected to a terminal (determined by
 Example:
 
 ```
-$./hsh
+$ ./hsh
 $
 ```
 
