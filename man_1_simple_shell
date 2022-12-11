@@ -1,18 +1,114 @@
-.TH man 1 "2 December 2022" "Simple Shell"
+.TH hsh "2022-12-11" "simple shell man page"
 
 .SH NAME
-.B Our own simple_shell.
-- We try to build our own simple shell.
+.B hsh simple shell
 
 .SH SYNOPSIS
-It is the creation of a simple unix command interpreter that provides a user interface to access operating system services.
-.SH
-.SH
-.SH DESCRIPTION
-we use the following files to build our own simple shell:
-.PP
-main.h - Add structure list_t, main.c - Free line before exit 127 in non interactive mode, helpers.c - Set unused variable, gettoken.c - Add gettoken function, getcmd.c - Add sigint handler, free.c - Free only if not NULL, finders.c - Handle message errors, constructors.c - Add constructor functions, builtins.c - 
-exit builtin now frees line before exit with bad arguments, parsers.c - Improve parsing, runcmd.c - Add environ variable to execve.
 
-.SH AUTHORS
-Roberto Montes, Marcelo Vizarra
+.B ./hsh
+
+.B echo "command" | ./hsh
+
+.B cat [bash_filename] | ./hsh
+
+.SH DESCRIPTION
+.B hsh is a basic UNIX command language interpreter that reads and executes commands from a file or standard input.
+
+.B Invocation
+.in +2n
+hsh can be invoked both interactively and non-interactively.
+.in
+
+.B Environment
+.in +2n
+**hsh** receives and copies the environment of the parent process in which it was invoked. This environment is an array of NAME=VALUE *name-value* strings that describe variables.
+.in
+
+.B Command Execution
+.in +2n
+**hsh** tokenizes the input into words. The first word is considered the command and all remaining words are considered arguments to that command.
+
+.B Command Chaining
+.in +2n
+The semicolon (;) is used to separate multiple commands on the same line. This allows to execute multiple commands without having to run them separately.
+
+.B Exit Status
+.in +2n
+**hsh** returns the exit status of the last command executed, with zero indicating success and non-zero indicating failure.
+
+All builtins return one on success and two on bad usage.
+.in
+
+.B Signals
+.in +2n
+While running in interactive mode, **hsh** ignores the keyboard input `Ctrl+c`. Alternatively, an input of end-of-file (`Ctrl+d`) will exit the program.
+.in
+
+.B Shell Builtin Commands
+.in +2n
+
+.RS
+.B cd
+.RS
+Usage: cd [DIRECTORY]
+.RE
+
+.B exit
+.RS
+Usage: exit [STATUS]
+.RE
+
+.B env
+.RS
+Usage: env
+.RE
+
+.B cd
+.RS
+Usage: cd [PATH DIR]
+.RE
+
+.SH EXAMPLE
+.nf
+
+./hsh
+$ echo Hello World
+Hello World
+
+$ pwd
+/root
+
+$ /bin/ls
+ada.txt betty cisfun
+
+$ /bin/ls; /bin/ls
+ada.txt betty cisfun
+ada.txt betty cisfun
+
+$ exit 98
+
+.ni
+
+.SH FUTURE IMPLEMENTATIONS
+
+.B "&& and ||" Handle the logical operators.
+
+.B "alias" Allows use aliases.
+
+.B "$$ $?" Variables replacement.
+
+.B "#" Allow the comments.
+
+.B "help" Display the help for the built-ins.
+
+.B "history" Displays the history list.
+
+.B "simple_shell [filename]" Can take a file as a command line argument.
+
+.SH SEE ALSO
+access(2), chdir(2), execve(2), _exit(2), exit(3), fflush(3), fork(2), free(3), isatty(3), getcwd(3), malloc(3), open(2), read(2), sh(1), signal(2), stat(2), wait(2), write(2)
+
+.B hsh is a basic emulation of the shell.
+
+.SH AUTHOR
+Marcelo Vizcarra and Roberto Montes
