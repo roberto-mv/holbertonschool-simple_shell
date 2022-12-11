@@ -15,14 +15,17 @@ void free_tree(struct cmd *cmd)
 	{
 		case EXEC:
 			ecmd = (struct execcmd *)cmd;
-			free(ecmd->argv[0]);
+			if (ecmd->argv[0] != NULL)
+				free(ecmd->argv[0]);
 			free(ecmd);
 			break;
 
 		case LIST:
 			lcmd = (struct listcmd *)cmd;
-			free_tree(lcmd->left);
-			free_tree(lcmd->right);
+			if (lcmd->left != NULL)
+				free_tree(lcmd->left);
+			if (lcmd->right != NULL)
+				free_tree(lcmd->right);
 			free(lcmd);
 			break;
 	}
