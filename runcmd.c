@@ -21,7 +21,7 @@ void runcmd(struct cmd *cmd)
 			execve(ecmd->argv[0], ecmd->argv, NULL);
 			strerr = strrchr(ecmd->argv[0], '/');
 			strerr++;
-			fprintf(stderr, "hsh: %s: ", strerr);
+			fprintf(stderr, "./hsh: %s: ", strerr);
 			perror(0);
 			break;
 
