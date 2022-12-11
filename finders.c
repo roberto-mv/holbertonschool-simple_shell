@@ -14,6 +14,11 @@ char *cmdfinder(char *line)
 	char *dir = NULL, *command, *token;
 
 	token = strtok(line, " \t\n\r\v;");
+	if (token == NULL && isatty(STDIN_FILENO))
+	{
+		safe_free(&line);
+		exit(0);
+	}
 	if (token == NULL)
 		return (NULL);
 
