@@ -15,7 +15,7 @@ int main(int ac __attribute__((unused)), char **av)
 	(void) av;
 	while (getcmd(&line) >= 0)
 	{
-		if (isabuiltin(line) == BUILTIN_FAIL)
+		if (isabuiltin(line) != -1)
 			continue;
 
 		cmd_tree = parsecmd(line);
