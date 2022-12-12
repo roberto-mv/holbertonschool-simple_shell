@@ -21,17 +21,14 @@ char *cmdfinder(char *line)
 	}
 	if (token == NULL)
 		return (NULL);
-
 	command = strdup(token);
 	if (access(command, F_OK) != -1)
 		return (command);
-
 	if (path == NULL)
 	{
 		fprintf(stderr, "./hsh: 1: %s: not found\n", token);
 		return (NULL);
 	}
-
 	temp = strdup(path);
 	dir = strtok(temp, ":");
 	while (dir != NULL)
@@ -60,7 +57,7 @@ char *cmdfinder(char *line)
  * Return: BUILTIN_SUCCESS on success. On failure, returns -1
  * if first argument is not a builtin, returns BUILTIN_FAIL if
  * argument is a builtin but falied to execute
- * 
+ *
  */
 int isabuiltin(char *line)
 {
